@@ -8,6 +8,7 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   bool value = false;
+
   void themeSwitch(context) {}
 
   @override
@@ -22,7 +23,6 @@ class _SettingsState extends State<Settings> {
             setState(() {
               value = v;
               if (value == true) {
-                value = v;
                 DynamicTheme.of(context).setBrightness(
                     Theme.of(context).brightness == Brightness.dark
                         ? Brightness.light

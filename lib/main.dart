@@ -17,9 +17,6 @@ class FlashChat extends StatelessWidget {
         defaultBrightness: Brightness.light,
         data: (brightness) => ThemeData(
             brightness: brightness,
-            //rest of the themeData
-            //you can also use conditioning here based on the current
-            //brightness mode (dark or light). For ex:
             primaryColor: brightness == Brightness.dark
                 ? Colors.white
                 : Colors.grey.shade900,
@@ -28,8 +25,9 @@ class FlashChat extends StatelessWidget {
                 : Colors.white),
         themedWidgetBuilder: (context, theme) {
           return MaterialApp(
-            theme: theme,
+            debugShowCheckedModeBanner: false,
             initialRoute: WelcomeScreen.id,
+            theme: theme,
             routes: {
               WelcomeScreen.id: (context) => WelcomeScreen(),
               ChatScreen.id: (context) => ChatScreen(),
