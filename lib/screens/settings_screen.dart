@@ -18,14 +18,14 @@ class _SettingsState extends State<Settings> {
         SwitchListTile(
           value: value,
           onChanged: (v) {
+            value = v;
             setState(() {
-              value = v;
               if (value == true) {
                 DynamicTheme.of(context).setBrightness(
                     Theme.of(context).brightness == Brightness.dark
                         ? Brightness.light
                         : Brightness.dark);
-              } else {
+              } else if (value == false) {
                 DynamicTheme.of(context).setBrightness(
                     Theme.of(context).brightness == Brightness.light
                         ? Brightness.dark

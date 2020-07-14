@@ -15,43 +15,42 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
-//  AnimationController controller;
-//  Animation animation;
-//
-//  @override
-//  void initState() {
-//    super.initState();
-//    controller = AnimationController(
-//      duration: Duration(seconds: 1),
-//      vsync: this,
-//    );
-//    animation = ColorTween(
-//            begin: Theme.of(context).brightness == Brightness.light
-//                ? Colors.grey
-//                : Colors.grey.shade900,
-//            end: Theme.of(context).Colors.white)
-//        .animate(controller);
-//    controller.forward();
-//    controller.addListener(() {
-//      setState(() {});
-//      print(animation.value);
-//    });
-//  }
+  AnimationController controller;
+  Animation animation;
 
-//  @override
-//  void dispose() {
-//    super.dispose();
-//    controller.dispose();
-//  }
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(
+      duration: Duration(seconds: 1),
+      vsync: this,
+    );
+    animation =
+        ColorTween(begin: Colors.grey, end: Colors.white).animate(controller);
+    controller.forward();
+    controller.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: Theme.of(context).brightness == Brightness.light
+            ? animation.value
+            : Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
       ),
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Theme.of(context).brightness == Brightness.light
+          ? animation.value
+          : Theme.of(context).scaffoldBackgroundColor,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
@@ -62,14 +61,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Spacer(),
-                Hero(
-                  tag: 'logo',
-                  child: Container(
-                    child: Image.asset('images/fire.png'),
-                    height: 60.0,
-                    margin: EdgeInsets.only(bottom: 0),
-                  ),
-                ),
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).pushNamed(Settings.id);
@@ -85,10 +76,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 ),
                 AnimatedTitle(
                   title: "Firechat",
-                ),
-                  child: AnimatedTitle(
-                    title: "Firechat",
-                  ),
                 ),
                 Spacer(
                   flex: 2,
