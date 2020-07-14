@@ -1,34 +1,47 @@
+import 'package:firechat/screens/registration_screen.dart';
+import 'package:firechat/screens/settings_screen.dart';
+import 'package:firechat/widgets/animated_title.dart';
+import 'package:firechat/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
-import 'chat_screen.dart';
 import 'login_screen.dart';
-import 'registration_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static String id = 'welcome_screen';
+
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> {
-//    with SingleTickerProviderStateMixin {
+class _WelcomeScreenState extends State<WelcomeScreen>
+    with SingleTickerProviderStateMixin {
 //  AnimationController controller;
 //  Animation animation;
-
+//
 //  @override
 //  void initState() {
 //    super.initState();
 //    controller = AnimationController(
-//      duration: Duration(milliseconds: 500),
+//      duration: Duration(seconds: 1),
 //      vsync: this,
 //    );
+//    animation = ColorTween(
+//            begin: Theme.of(context).brightness == Brightness.light
+//                ? Colors.grey
+//                : Colors.grey.shade900,
+//            end: Theme.of(context).Colors.white)
+//        .animate(controller);
 //    controller.forward();
-//    animation =
-//        CurvedAnimation(parent: controller, curve: Curves.easeInToLinear);
 //    controller.addListener(() {
 //      setState(() {});
 //      print(animation.value);
 //    });
+//  }
+
+//  @override
+//  void dispose() {
+//    super.dispose();
+//    controller.dispose();
 //  }
 
   @override
@@ -42,68 +55,46 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                Spacer(),
                 Hero(
                   tag: 'logo',
                   child: Container(
                     child: Image.asset('images/fire.png'),
                     height: 60.0,
-                    margin: EdgeInsets.only(bottom: 12),
+                    margin: EdgeInsets.only(bottom: 0),
                   ),
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, ChatScreen.id);
+                    Navigator.of(context).pushNamed(Settings.id);
                   },
-                  child: Text(
-                    'FireChat',
-                    style: TextStyle(
-                      fontSize: 50.0,
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.w900,
-                    ),
+                  child: AnimatedTitle(
+                    title: "Firechat",
                   ),
                 ),
+                Spacer(
+                  flex: 2,
+                )
               ],
             ),
             SizedBox(
-              height: 48.0,
+              height: 16.0,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                elevation: 5.0,
-                color: Colors.lightBlueAccent,
-                borderRadius: BorderRadius.circular(30.0),
-                child: MaterialButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(LoginScreen.id);
-                  },
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: Text(
-                    'Log In',
-                  ),
-                ),
-              ),
+            RoundedButton(
+              text: 'Login',
+              onPressed: () {
+                Navigator.pushNamed(context, LoginScreen.id);
+              },
+              colors: Colors.blueAccent,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                color: Colors.blueAccent,
-                borderRadius: BorderRadius.circular(30.0),
-                elevation: 5.0,
-                child: MaterialButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(RegistrationScreen.id);
-                  },
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: Text(
-                    'Register',
-                  ),
-                ),
-              ),
+            RoundedButton(
+              text: 'Register',
+              onPressed: () {
+                Navigator.pushNamed(context, RegistrationScreen.id);
+              },
+              colors: Colors.lightBlueAccent,
             ),
           ],
         ),

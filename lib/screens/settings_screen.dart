@@ -2,15 +2,13 @@ import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 
 class Settings extends StatefulWidget {
+  static String id = 'settings';
   @override
   _SettingsState createState() => _SettingsState();
 }
 
 class _SettingsState extends State<Settings> {
   bool value = false;
-
-  void themeSwitch(context) {}
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

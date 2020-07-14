@@ -1,4 +1,5 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:firechat/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/chat_screen.dart';
@@ -15,14 +16,7 @@ class FlashChat extends StatelessWidget {
   Widget build(BuildContext context) {
     return DynamicTheme(
         defaultBrightness: Brightness.light,
-        data: (brightness) => ThemeData(
-            brightness: brightness,
-            primaryColor: brightness == Brightness.dark
-                ? Colors.white
-                : Colors.grey.shade900,
-            scaffoldBackgroundColor: brightness == Brightness.dark
-                ? Colors.grey.shade900
-                : Colors.white),
+        data: (brightness) => themeData(brightness),
         themedWidgetBuilder: (context, theme) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
@@ -32,9 +26,24 @@ class FlashChat extends StatelessWidget {
               WelcomeScreen.id: (context) => WelcomeScreen(),
               ChatScreen.id: (context) => ChatScreen(),
               RegistrationScreen.id: (context) => RegistrationScreen(),
-              LoginScreen.id: (context) => LoginScreen()
+              LoginScreen.id: (context) => LoginScreen(),
+              Settings.id: (context) => Settings(),
             },
           );
         });
   }
+}
+
+ThemeData themeData(brightness) {
+  return ThemeData(
+      brightness: brightness,
+      textTheme: TextTheme(
+          body1: TextStyle(
+              color: brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.grey.shade900)),
+      primaryColor:
+          brightness == Brightness.dark ? Colors.white : Colors.grey.shade900,
+      scaffoldBackgroundColor:
+          brightness == Brightness.dark ? Colors.grey.shade900 : Colors.white);
 }
