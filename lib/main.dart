@@ -1,7 +1,9 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:firechat/screens/settings_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'configs/themedata.dart';
 import 'screens/chat_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/registration_screen.dart';

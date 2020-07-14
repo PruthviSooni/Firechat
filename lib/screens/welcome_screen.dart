@@ -47,6 +47,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0,
+      ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
@@ -70,6 +74,18 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   onTap: () {
                     Navigator.of(context).pushNamed(Settings.id);
                   },
+                  child: Hero(
+                    tag: 'logo',
+                    child: Container(
+                      child: Image.asset('images/fire.png'),
+                      height: 60.0,
+                      margin: EdgeInsets.only(bottom: 0),
+                    ),
+                  ),
+                ),
+                AnimatedTitle(
+                  title: "Firechat",
+                ),
                   child: AnimatedTitle(
                     title: "Firechat",
                   ),
