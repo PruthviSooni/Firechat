@@ -8,7 +8,6 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  bool value = false;
   @override
   Widget build(BuildContext context) {
     bool value = false;
