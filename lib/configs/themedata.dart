@@ -8,10 +8,11 @@ ThemeData themeData(brightness) {
             ? Brightness.light
             : Brightness.dark),
     textTheme: TextTheme(
-        body1: TextStyle(
-            color: brightness == Brightness.dark
-                ? Colors.white
-                : Colors.grey.shade900)),
+      body1: TextStyle(
+          color: brightness == Brightness.dark
+              ? Colors.white
+              : Colors.grey.shade900),
+    ),
     primaryColor:
         brightness == Brightness.dark ? Colors.white : Colors.grey.shade900,
     scaffoldBackgroundColor:

@@ -17,13 +17,22 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+
   final _auth = FirebaseAuth.instance;
   String _email;
   String _password;
 
+  _showSnackBar(String error) {
+    final snackBar = SnackBar(
+      content: Text("$error"),
+    );
+    _key.currentState.showSnackBar(snackBar);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _key,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
@@ -66,21 +75,29 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               height: 24.0,
             ),
             RoundedButton(
-              text: 'Register',
-              onPressed: () async {
-                try {
-                  final newUser = await _auth.createUserWithEmailAndPassword(
-                      email: _email.trim(), password: _password.trim());
-                  print(newUser);
-                  if (newUser == null) {
-                    CircularProgressIndicator();
+                colors: Colors.blueAccent,
+                text: 'Register',
+                onPressed: () async {
+                  if (!_email.contains('@')) {
+                    _showSnackBar('Invalid Email address');
+                  } else if (_password.length < 6) {
+                    _showSnackBar('Password should contain 6 letter at lest');
                   } else {
-                    Navigator.pushNamed(context, ChatScreen.id);
+                    try {
+                      final newUser =
+                          await _auth.createUserWithEmailAndPassword(
+                              email: _email.trim(), password: _password.trim());
+                      print(newUser);
+                      if (newUser == null) {
+                        CircularProgressIndicator();
+                      } else {
+                        Navigator.pushNamed(context, ChatScreen.id);
+                      }
+                    } catch (e) {
+                      print('Error : $e');
+                    }
                   }
-                } catch (e) {
-                  print('Error : $e');
                 }
-              colors: Colors.blueAccent,
             ),
             Center(
               child: GestureDetector(

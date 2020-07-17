@@ -3,7 +3,6 @@ import 'package:firechat/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
-import 'welcome_screen.dart';
 
 class ChatScreen extends StatefulWidget {
   static String id = 'chat_screen';
@@ -26,7 +25,6 @@ class _ChatScreenState extends State<ChatScreen> {
       final user = await _auth.currentUser();
       if (user != null) {
         loggedInUser = user;
-        print(loggedInUser.email);
       }
     } catch (e) {
       print(e);
@@ -36,10 +34,8 @@ class _ChatScreenState extends State<ChatScreen> {
   void handleClick(String value) {
     switch (value) {
       case 'Close':
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => WelcomeScreen()),
-            ModalRoute.withName(WelcomeScreen.id));
+        _auth.signOut();
+        Navigator.pop(context);
         break;
       case 'Settings':
         Navigator.of(context)
@@ -54,11 +50,6 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         leading: null,
         actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () {
-                //Implement logout functionality
-              }),
           PopupMenuButton<String>(
             onSelected: handleClick,
             itemBuilder: (BuildContext context) {

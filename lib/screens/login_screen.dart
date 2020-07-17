@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firechat/constants.dart';
+import 'package:firechat/screens/chat_screen.dart';
 import 'package:firechat/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
@@ -13,9 +15,21 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  String _email;
+  String _password;
+  _showSnackBar() {
+    final snackBar = SnackBar(
+      content: Text("Invalid Email or Password please check!"),
+    );
+    _key.currentState.showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _key,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
@@ -37,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 keyboardType: TextInputType.emailAddress,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
+                  _email = value;
                   //Do something with the user input.
                 },
                 decoration: kTextFieldDecoration.copyWith(
@@ -48,6 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 obscureText: true,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
+                  _password = value;
                   //Do something with the user input.
                 },
                 decoration: kTextFieldDecoration.copyWith(
@@ -57,7 +73,21 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             RoundedButton(
               text: 'Login',
-              onPressed: () {
+              onPressed: () async {
+                try {
+                  final existUser = await _auth
+                      .signInWithEmailAndPassword(
+                          email: _email.trim(), password: _password.trim())
+                      .catchError((onError) {
+                    _showSnackBar();
+                  });
+                  print(existUser);
+                  if (existUser != null) {
+                    Navigator.pushNamed(context, ChatScreen.id);
+                  }
+                } catch (e) {
+                  print(e);
+                }
                 //
               },
               colors: Colors.blueAccent,
