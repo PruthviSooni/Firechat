@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 ThemeData themeData(brightness) {
   return ThemeData(
+    accentColor: Colors.blue,
     brightness: brightness,
     appBarTheme: AppBarTheme(
         brightness: brightness == Brightness.light
@@ -9,9 +10,9 @@ ThemeData themeData(brightness) {
             : Brightness.dark),
     textTheme: TextTheme(
       body1: TextStyle(
-          color: brightness == Brightness.dark
-              ? Colors.white
-              : Colors.grey.shade900),
+        color:
+            brightness == Brightness.dark ? Colors.white : Colors.grey.shade900,
+      ),
     ),
     primaryColor:
         brightness == Brightness.dark ? Colors.white : Colors.grey.shade900,
