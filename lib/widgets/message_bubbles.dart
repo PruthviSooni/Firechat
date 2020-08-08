@@ -4,7 +4,8 @@ class MsgBubbles extends StatelessWidget {
   final String text;
   final String sender;
   final bool isMe;
-  const MsgBubbles({Key key, this.isMe, this.text, this.sender})
+  final String timestamp;
+  const MsgBubbles({Key key, this.timestamp, this.isMe, this.text, this.sender})
       : super(key: key);
 
   @override
@@ -26,14 +27,21 @@ class MsgBubbles extends StatelessWidget {
           Material(
             borderRadius: BorderRadius.circular(14),
             elevation: 5,
-            color: isMe ? Colors.blue : Colors.grey,
+            color: isMe ? Colors.lightBlueAccent : Colors.blue.shade100,
             child: Container(
               padding: EdgeInsets.all(8),
               child: Text(
                 text,
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(fontSize: 18, color: Colors.grey.shade800),
               ),
             ),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Text(
+            timestamp,
+            style: TextStyle(fontSize: 10, fontStyle: FontStyle.italic),
           ),
         ],
       ),

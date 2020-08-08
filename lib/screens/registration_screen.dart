@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firechat/constants.dart';
+import 'package:firechat/configs/constants.dart';
 import 'package:firechat/screens/chat_screen.dart';
 import 'package:firechat/widgets/rounded_button.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,6 +19,8 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   final _auth = FirebaseAuth.instance;
   String _email;
@@ -56,6 +58,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 height: 48.0,
               ),
               TextField(
+                controller: emailController,
                 keyboardType: TextInputType.emailAddress,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
@@ -68,6 +71,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 height: 8.0,
               ),
               TextField(
+                  controller: passwordController,
                   obscureText: true,
                   showCursor: true,
                   textAlign: TextAlign.center,
@@ -83,9 +87,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   colors: Colors.blueAccent,
                   text: 'Register',
                   onPressed: () async {
-                    setState(() {
-                      _loading = true;
-                    });
+                    if (emailController.text.isEmpty) {
+                      _showSnackBar("Please enter email!!");
+                    } else if (passwordController.text.isEmpty) {
+                      _showSnackBar("Please enter password!!");
+                    } else {
+                      setState(() {
+                        _loading = true;
+                      });
+                    }
                     if (!_email.contains('@')) {
                       _showSnackBar('Invalid Email address');
                     } else if (_password.length < 6) {

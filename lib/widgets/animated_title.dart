@@ -17,7 +17,8 @@ class AnimatedTitle extends StatelessWidget {
       isRepeatingAnimation: true,
       textStyle: TextStyle(
         fontSize: 50.0,
-        color: Theme.of(context).primaryColor,
+        // ignore: deprecated_member_use
+        color: Theme.of(context).textTheme.headline.color,
         fontWeight: FontWeight.w900,
       ),
     );

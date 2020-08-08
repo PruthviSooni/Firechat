@@ -9,6 +9,7 @@ ThemeData themeData(brightness) {
             ? Brightness.light
             : Brightness.dark),
     textTheme: TextTheme(
+      // ignore: deprecated_member_use
       body1: TextStyle(
         color:
             brightness == Brightness.dark ? Colors.white : Colors.grey.shade900,

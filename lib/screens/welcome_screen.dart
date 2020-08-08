@@ -1,5 +1,4 @@
 import 'package:firechat/screens/registration_screen.dart';
-import 'package:firechat/screens/settings_screen.dart';
 import 'package:firechat/widgets/animated_title.dart';
 import 'package:firechat/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +25,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       vsync: this,
     );
     animation =
-        ColorTween(begin: Colors.grey, end: Colors.white).animate(controller);
+        ColorTween(begin: Colors.grey.shade700, end: Colors.grey.shade900)
+            .animate(controller);
     controller.forward();
     controller.addListener(() {
       setState(() {});
@@ -43,14 +43,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).brightness == Brightness.light
-            ? animation.value
-            : Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: animation.value,
         elevation: 0,
       ),
-      backgroundColor: Theme.of(context).brightness == Brightness.light
-          ? animation.value
-          : Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: animation.value,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
@@ -61,10 +57,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Spacer(),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(Settings.id);
-                  },
+                Flexible(
                   child: Hero(
                     tag: 'logo',
                     child: Container(

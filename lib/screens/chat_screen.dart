@@ -3,9 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firechat/widgets/message_bubbles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../constants.dart';
-import 'settings_screen.dart';
+import 'package:timeago/timeago.dart' as timeago;
+import '../configs/constants.dart';
 
 class ChatScreen extends StatefulWidget {
   static String id = 'chat_screen';
@@ -38,43 +37,17 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  void handleClick(String value) {
-    switch (value) {
-      case 'Close':
-        _auth.signOut();
-        Navigator.pop(context);
-        break;
-      case 'Settings':
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => Settings(),
-          ),
-        );
-        break;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: null,
-        actions: <Widget>[
-          PopupMenuButton<String>(
-            onSelected: handleClick,
-            itemBuilder: (BuildContext context) {
-              return {
-                'Settings',
-                'Close',
-              }.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(choice),
-                );
-              }).toList();
-            },
-          ),
-        ],
+        centerTitle: true,
+        leading: IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () {
+              _auth.signOut();
+              Navigator.pop(context);
+            }),
         title: Text('🔥 Chat'),
         backgroundColor: Colors.lightBlueAccent,
       ),
@@ -86,29 +59,32 @@ class _ChatScreenState extends State<ChatScreen> {
             StreamBuilder<QuerySnapshot>(
               stream: _firesotre
                   .collection("messages")
-                  .orderBy("sender", descending: true)
+                  .orderBy("time", descending: false)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  final messages = snapshot.data.documents;
+                  final messages = snapshot.data.documents.reversed;
                   List<MsgBubbles> messageBubbles = [];
                   for (var message in messages) {
                     String msg = message.data["messages"];
                     String sender = message.data['sender'];
+                    int time = message.data['time'];
+                    DateTime timestamp =
+                        DateTime.fromMillisecondsSinceEpoch(time);
+                    var timeStamp = timeago
+                        .format(DateTime.tryParse(timestamp.toString()))
+                        .toString();
                     final currentUser = loggedInUser.email;
                     Widget msgBubble = MsgBubbles(
                       text: msg,
                       sender: sender,
+                      timestamp: timeStamp,
                       isMe: currentUser == sender,
                     );
                     messageBubbles.add(msgBubble);
                   }
                   return Expanded(
-                    child: ListView(
-                        addAutomaticKeepAlives: true,
-                        addSemanticIndexes: true,
-                        shrinkWrap: true,
-                        children: messageBubbles),
+                    child: ListView(reverse: true, children: messageBubbles),
                   );
                 }
                 return Container();
@@ -135,6 +111,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         {
                           'messages': _message,
                           'sender': loggedInUser.email,
+                          'time': DateTime.now().millisecondsSinceEpoch,
                         },
                       );
                     },
