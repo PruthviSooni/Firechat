@@ -74,8 +74,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     int time = message.data['time'];
                     DateTime timestamp =
                         DateTime.fromMillisecondsSinceEpoch(time);
-                    var timeStamp;
-                    timeStamp = timeago
+
+
+                    var timeStamp = timeago
                         .format(DateTime.tryParse(timestamp.toString()))
                         .toString();
                     final currentUser = loggedInUser.email;
