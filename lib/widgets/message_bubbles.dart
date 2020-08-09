@@ -7,7 +7,6 @@ class MsgBubbles extends StatelessWidget {
   final String timestamp;
   const MsgBubbles({Key key, this.timestamp, this.isMe, this.text, this.sender})
       : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,7 +24,12 @@ class MsgBubbles extends StatelessWidget {
             height: 5,
           ),
           Material(
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.only(
+                topLeft:
+                    isMe == false ? Radius.circular(0) : Radius.circular(14),
+                bottomLeft: Radius.circular(14),
+                bottomRight: Radius.circular(14),
+                topRight: isMe ? Radius.circular(0) : Radius.circular(8)),
             elevation: 5,
             color: isMe ? Colors.lightBlueAccent : Colors.blue.shade100,
             child: Container(

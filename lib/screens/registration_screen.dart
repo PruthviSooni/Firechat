@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firechat/configs/constants.dart';
 import 'package:firechat/screens/chat_screen.dart';
@@ -88,9 +89,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   text: 'Register',
                   onPressed: () async {
                     if (emailController.text.isEmpty) {
-                      _showSnackBar("Please enter email!!");
+                      _showSnackBar("Please enter Email!!");
                     } else if (passwordController.text.isEmpty) {
-                      _showSnackBar("Please enter password!!");
+                      _showSnackBar("Please enter Password!!");
                     } else {
                       setState(() {
                         _loading = true;
@@ -106,7 +107,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             await _auth.createUserWithEmailAndPassword(
                                 email: _email.trim(),
                                 password: _password.trim());
-                        print(newUser);
                         if (newUser == null) {
                           CircularProgressIndicator();
                         } else {
