@@ -63,7 +63,9 @@ class _ChatScreenState extends State<ChatScreen> {
                   .orderBy("time", descending: false)
                   .snapshots(),
               builder: (context, snapshot) {
-                if (snapshot.hasData) {
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                } else {
                   final messages = snapshot.data.documents.reversed;
                   List<MsgBubbles> messageBubbles = [];
                   for (var message in messages) {
@@ -72,6 +74,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     int time = message.data['time'];
                     DateTime timestamp =
                         DateTime.fromMillisecondsSinceEpoch(time);
+
+
                     var timeStamp = timeago
                         .format(DateTime.tryParse(timestamp.toString()))
                         .toString();
@@ -88,7 +92,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: ListView(reverse: true, children: messageBubbles),
                   );
                 }
-                return Container();
               },
             ),
             Container(
