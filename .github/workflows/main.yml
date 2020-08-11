@@ -27,7 +27,7 @@ jobs:
       with:
         channel: 'beta' # or: 'dev' or 'beta'
     - run: flutter pub get
-    - run: flutter build apk --target-platform android-arm64
+    - run: flutter build apk --debug --split-per-abi
     - name: Create a Release APK
       uses: ncipollo/release-action@v1
       with:  
