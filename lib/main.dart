@@ -1,3 +1,4 @@
+import 'package:firechat/screens/root_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,6 @@ class FlashChat extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: WelcomeScreen.id,
       theme: ThemeData(
           brightness: Brightness.dark,
           primaryColor: Colors.blue,
@@ -27,6 +27,7 @@ class FlashChat extends StatelessWidget {
         RegistrationScreen.id: (context) => RegistrationScreen(),
         LoginScreen.id: (context) => LoginScreen(),
       },
+      home: RootScreen(),
     );
   }
 }
