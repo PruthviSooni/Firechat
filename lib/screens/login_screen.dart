@@ -97,7 +97,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             email: _email.trim(), password: _password.trim())
                         .catchError((onError) {
                       _showSnackBar("Invalid Email or Password please check!");
-
                     });
                     print(existUser);
                     if (existUser != null) {

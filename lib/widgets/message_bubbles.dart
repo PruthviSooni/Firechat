@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:random_color/random_color.dart';
 
 class MsgBubbles extends StatelessWidget {
+  final Color _color =
+      RandomColor().randomColor(colorBrightness: ColorBrightness.dark);
   final String text;
   final String sender;
   final bool isMe;
   final String timestamp;
-  const MsgBubbles({Key key, this.timestamp, this.isMe, this.text, this.sender})
+
+  MsgBubbles({Key key, this.timestamp, this.isMe, this.text, this.sender})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,17 +31,19 @@ class MsgBubbles extends StatelessWidget {
           Material(
             borderRadius: BorderRadius.only(
                 topLeft:
-                    isMe == false ? Radius.circular(0) : Radius.circular(14),
+                isMe == false ? Radius.circular(0) : Radius.circular(14),
                 bottomLeft: Radius.circular(14),
                 bottomRight: Radius.circular(14),
                 topRight: isMe ? Radius.circular(0) : Radius.circular(8)),
             elevation: 5,
-            color: isMe ? Colors.lightBlueAccent : Colors.blue.shade100,
+            color: isMe ? Colors.lightBlueAccent : _color,
             child: Container(
               padding: EdgeInsets.all(8),
               child: Text(
                 text,
-                style: TextStyle(fontSize: 18, color: Colors.grey.shade800),
+                style: TextStyle(
+                    fontSize: 18,
+                    color: isMe ? Colors.grey.shade900 : Colors.white),
               ),
             ),
           ),

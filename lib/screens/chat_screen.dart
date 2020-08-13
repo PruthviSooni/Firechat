@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:firechat/screens/welcome_screen.dart';
 import 'package:firechat/widgets/message_bubbles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
 import '../configs/constants.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -47,7 +48,8 @@ class _ChatScreenState extends State<ChatScreen> {
             icon: Icon(Icons.close),
             onPressed: () {
               _auth.signOut();
-              Navigator.pop(context);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, WelcomeScreen.id, (route) => false);
             }),
         title: Text('🔥 Chat'),
         backgroundColor: Colors.lightBlueAccent,
@@ -74,8 +76,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     int time = message.data['time'];
                     DateTime timestamp =
                         DateTime.fromMillisecondsSinceEpoch(time);
-
-
                     var timeStamp = timeago
                         .format(DateTime.tryParse(timestamp.toString()))
                         .toString();
