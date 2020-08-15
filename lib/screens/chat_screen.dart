@@ -8,6 +8,10 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import '../configs/constants.dart';
 
+final _auth = FirebaseAuth.instance;
+final _firesotre = Firestore.instance;
+FirebaseUser loggedInUser;
+
 class ChatScreen extends StatefulWidget {
   static String id = 'chat_screen';
 
@@ -17,15 +21,18 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final msgTextEditingController = TextEditingController();
-  final _auth = FirebaseAuth.instance;
-  final _firesotre = Firestore.instance;
   String _message;
-  FirebaseUser loggedInUser;
 
   @override
   void initState() {
     getCurrentUser();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    msgTextEditingController.dispose();
+    super.dispose();
   }
 
   void getCurrentUser() async {
@@ -66,36 +73,15 @@ class _ChatScreenState extends State<ChatScreen> {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
-                } else {
-                  final messages = snapshot.data.documents.reversed;
-                  List<MsgBubbles> messageBubbles = [];
-                  for (var message in messages) {
-                    String msg = message.data["messages"];
-                    String sender = message.data['sender'];
-                    int time = message.data['time'];
-                    DateTime timestamp =
-                        DateTime.fromMillisecondsSinceEpoch(time);
-                    var timeStamp = timeago
-                        .format(DateTime.tryParse(timestamp.toString()))
-                        .toString();
-                    final currentUser = loggedInUser.email;
-                    Widget msgBubble = MsgBubbles(
-                      text: msg,
-                      sender: sender,
-                      timestamp: timeStamp,
-                      isMe: currentUser == sender,
-                    );
-                    messageBubbles.add(msgBubble);
-                  }
                   return Expanded(
-                    child: ListView(reverse: true, children: messageBubbles),
+                    child: Center(child: CircularProgressIndicator()),
                   );
+                } else {
+                  return getMessages(snapshot);
                 }
               },
             ),
             Container(
-              decoration: kMessageContainerDecoration,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
@@ -105,32 +91,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       onChanged: (value) {
                         _message = value;
                       },
-                      decoration: kMessageTextFieldDecoration,
-                    ),
-                  ),
-                  FlatButton(
-                    onPressed: () {
-                      msgTextEditingController.clear();
-                      _firesotre.collection('messages').add(
-                        {
-                          'messages': _message,
-                          'sender': loggedInUser.email,
-                          'time': DateTime.now().millisecondsSinceEpoch,
-                        },
-                      );
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      margin: EdgeInsets.only(top: 8, bottom: 8),
-                      decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.circular(8),
-                          color: Colors.blue),
-                      child: Text(
-                        'Send',
-                        style:
-                            kSendButtonTextStyle.copyWith(color: Colors.white),
-                      ),
+                      decoration: textFieldDecoration(),
                     ),
                   ),
                 ],
@@ -138,6 +99,82 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Expanded getMessages(AsyncSnapshot<QuerySnapshot> snapshot) {
+    final messages = snapshot.data.documents.reversed;
+    List<MsgBubbles> messageBubbles = [];
+    for (var message in messages) {
+      String msg = message.data["messages"];
+      String sender = message.data['sender'];
+      int time = message.data['time'];
+      DateTime timestamp = DateTime.fromMillisecondsSinceEpoch(time);
+      var timeStamp =
+          timeago.format(DateTime.tryParse(timestamp.toString())).toString();
+      final currentUser = loggedInUser.email;
+      Widget msgBubble = MsgBubbles(
+        text: msg,
+        sender: sender,
+        timestamp: timeStamp,
+        isMe: currentUser == sender,
+      );
+      messageBubbles.add(msgBubble);
+    }
+    return Expanded(
+      child: GestureDetector(
+          onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
+          child: ListView(reverse: true, children: messageBubbles)),
+    );
+  }
+
+  void sendMessage() {
+    msgTextEditingController.clear();
+    _firesotre.collection('messages').add(
+      {
+        'messages': _message,
+        'sender': loggedInUser.email,
+        'time': DateTime.now().millisecondsSinceEpoch,
+      },
+    );
+  }
+
+  InputDecoration textFieldDecoration() {
+    msgTextEditingController.addListener(() {
+      setState(() {});
+    });
+    return InputDecoration(
+      contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+      hintText: 'Type your message here...',
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(50),
+      ),
+      suffixIcon: msgTextEditingController.text.length > 0
+          ? IconButton(
+              icon: Icon(Icons.send),
+              iconSize: 30,
+              padding: EdgeInsets.only(right: 20),
+              tooltip: "Send",
+              onPressed: () => sendMessage(),
+            )
+          : null,
+    );
+  }
+
+  sendButton() {
+    return Container(
+      margin: EdgeInsets.only(top: 5, bottom: 5),
+      padding: EdgeInsets.all(6),
+      decoration: BoxDecoration(
+          color: Colors.lightBlue,
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(
+            color: Colors.blue,
+          )),
+      child: Text(
+        'Send',
+        style: kSendButtonTextStyle.copyWith(color: Colors.white),
       ),
     );
   }

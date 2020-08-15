@@ -31,7 +31,7 @@ class MsgBubbles extends StatelessWidget {
           Material(
             borderRadius: BorderRadius.only(
                 topLeft:
-                isMe == false ? Radius.circular(0) : Radius.circular(14),
+                    isMe == false ? Radius.circular(0) : Radius.circular(14),
                 bottomLeft: Radius.circular(14),
                 bottomRight: Radius.circular(14),
                 topRight: isMe ? Radius.circular(0) : Radius.circular(8)),
@@ -40,7 +40,7 @@ class MsgBubbles extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.all(8),
               child: Text(
-                text,
+                text ?? "",
                 style: TextStyle(
                     fontSize: 18,
                     color: isMe ? Colors.grey.shade900 : Colors.white),

@@ -5,11 +5,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Flutter: Attach to Device",
-            "type": "dart",
-            "request": "attach"
-        },
-        {
             "name": "Flutter",
             "program": "lib/main.dart",
             "request": "launch",
